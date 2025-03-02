@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Community App</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
+    <link rel="stylesheet" href="app.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- Add Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Add new Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="content">
+      <!-- Welcome Message -->
+      <div id="welcomeContainer" class="fade-in glass-container">
+        <div class="welcome-icon">
+          <i class="fas fa-globe-americas"></i>
+        </div>
+        <h1>Welcome, <span id="usernameDisplay"></span></h1>
+        <p>Join your community and stay connected.</p>
+      </div>
+
+      <!-- Map Section -->
+      <div id="mapContainer" class="hidden slide-in glass-container">
+        <div class="section-header">
+          <i class="fas fa-map-marked-alt"></i>
+          <h2>Community Map</h2>
+        </div>
+        <div id="map"></div>
+      </div>
+
+      <!-- Chat Section - Now as a separate section -->
+      <div id="chatContainer" class="hidden slide-in">
+        <div class="chat-wrapper glass-container">
+          <div class="section-header">
+            <i class="fas fa-comments"></i>
+            <h2>Community Chat</h2>
+          </div>
+
+          <div class="chat-box" id="chatBox">
+            <div class="new-messages-separator">New Messages</div>
+
+            <div class="typing-indicator">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+
+          <div class="chat-input">
+            <input
+              type="text"
+              id="messageInput"
+              placeholder="Type your message..."
+              autocomplete="off"
+            />
+            <button onclick="sendMessage()">
+              <i class="fas fa-paper-plane"></i>
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Features Section -->
+      <div id="featuresContainer" class="hidden slide-in">
+        <div class="section-header">
+          <i class="fas fa-star"></i>
+          <h2>Features & Events</h2>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card glass-container">
+            <div class="feature-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h3>Meet Neighbors</h3>
+            <p>Connect with people in your area.</p>
+          </div>
+          <div class="feature-card glass-container">
+            <div class="feature-icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <h3>Events</h3>
+            <p>Join local events and activities.</p>
+          </div>
+          <div class="feature-card glass-container">
+            <div class="feature-icon">
+              <i class="fas fa-hand-holding-heart"></i>
+            </div>
+            <h3>Support</h3>
+            <p>Get or offer help in your community.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Section -->
+      <div id="profileContainer" class="hidden slide-in">
+        <div class="profile">
+          <div class="profile-cover"></div>
+          <div class="profile-main">
+            <img src="https://via.placeholder.com/150" alt="Profile Picture" />
+            <div class="name-badge">
+              <h2>John Doe</h2>
+              <span class="verified-badge" title="Verified Account">
+                <i class="fas fa-check"></i>
+              </span>
+            </div>
+            <p class="member-since">Member since 2023</p>
+
+            <div class="profile-badges">
+              <div class="badge" title="Verified Member">
+                <i class="fas fa-check"></i>
+              </div>
+              <div class="badge" title="Top Contributor">
+                <i class="fas fa-award"></i>
+              </div>
+              <div class="badge" title="Community Helper">
+                <i class="fas fa-hands-helping"></i>
+              </div>
+              <div class="badge" title="Event Organizer">
+                <i class="fas fa-calendar-check"></i>
+              </div>
+            </div>
+
+            <div class="profile-stats">
+              <div class="stat-item">
+                <i class="fas fa-comments"></i>
+                <span>120</span>
+                <p>Messages</p>
+              </div>
+              <div class="stat-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>New York</span>
+                <p>Location</p>
+              </div>
+              <div class="stat-item">
+                <i class="fas fa-users"></i>
+                <span>45</span>
+                <p>Connections</p>
+              </div>
+              <div class="stat-item">
+                <i class="fas fa-star"></i>
+                <span>4.8</span>
+                <p>Rating</p>
+              </div>
+            </div>
+
+            <div class="profile-actions">
+              <button class="profile-action-btn">
+                <i class="fas fa-edit"></i>
+                Edit Profile
+              </button>
+              <button class="profile-action-btn">
+                <i class="fas fa-share"></i>
+                Share Profile
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating Action Buttons -->
+    <div class="fab-container">
+      <button id="voiceToggle" class="voice-button fab">
+        <i class="fas fa-volume-up"></i>
+      </button>
+      <button id="sosButton" class="sos-button fab" onclick="sendSOSMessage()">
+        <i class="fas fa-exclamation-triangle"></i>
+      </button>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar glass-nav">
+      <button class="button" onclick="showSection('home')">
+        <i class="fas fa-home"></i><span>Home</span>
+      </button>
+      <button class="button" onclick="showSection('map')">
+        <i class="fas fa-map-marked-alt"></i><span>Map</span>
+      </button>
+      <button class="button" onclick="showSection('chat')">
+        <i class="fas fa-comments"></i><span>Chat</span>
+      </button>
+      <button class="button" onclick="showSection('features')">
+        <i class="fas fa-star"></i><span>Features</span>
+      </button>
+      <button class="button" onclick="showSection('profile')">
+        <i class="fas fa-user"></i><span>Profile</span>
+      </button>
+    </nav>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
